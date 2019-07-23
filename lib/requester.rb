@@ -20,8 +20,8 @@ class Requester
   def normal_send(http_method, path, params={}, headers={})
     res = @conn.send(http_method) do |req|
       req.url path
-      req.params = params if params.present?
-      req.headers = headers if headers.present?
+      req.params = params if object_present?(params)
+      req.headers = headers if object_present?(headers)
     end
     process_response(res)
   rescue => e
@@ -31,9 +31,9 @@ class Requester
   def json_send(http_method, path, params={}, headers={})
     res = @conn.send(http_method) do |req|
       req.url path
-      req.headers = headers if headers.present?
+      req.headers = headers if object_present?(headers)
       req.headers['Content-Type'] = 'application/json'
-      req.body = params.to_json if params.present?
+      req.body = params.to_json if object_present?(params)
     end
     process_response(res)
   rescue => e
@@ -64,5 +64,9 @@ class Requester
 
   def error_response(err)
     {'status' => 500, 'message' => "#{err.class.name}: #{err.message}"}
+  end
+
+  def object_present?(object)
+    !(object.nil? || object.empty?)
   end
 end
