@@ -1,7 +1,7 @@
 require 'faraday'
 require 'json'
 
-class Requester
+class JsonRequester
   attr_reader :host, :conn
 
   def initialize(host)
