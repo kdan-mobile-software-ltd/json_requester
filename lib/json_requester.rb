@@ -20,8 +20,20 @@ class JsonRequester
   def normal_send(http_method, path, params={}, headers={})
     res = @conn.send(http_method) do |req|
       req.url path
-      req.params = params if object_present?(params)
       req.headers = headers if object_present?(headers)
+      req.params = params if object_present?(params)
+    end
+    process_response(res)
+  rescue => e
+    error_response(e)
+  end
+
+  def form_send(http_method, path, params={}, headers={})
+    res = @conn.send(http_method) do |req|
+      req.url path
+      req.headers = headers if object_present?(headers)
+      req.headers['Content-Type'] = 'application/x-www-form-urlencoded ;charset=utf-8'
+      req.body = params if object_present?(params)
     end
     process_response(res)
   rescue => e
@@ -32,7 +44,7 @@ class JsonRequester
     res = @conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = 'application/json'
+      req.headers['Content-Type'] = 'application/json ;charset=utf-8'
       req.body = params.to_json if object_present?(params)
     end
     process_response(res)
