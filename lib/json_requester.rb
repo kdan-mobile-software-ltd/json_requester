@@ -33,7 +33,7 @@ class JsonRequester
       req.url path
       req.headers = headers if object_present?(headers)
       req.headers['Content-Type'] = 'application/x-www-form-urlencoded ;charset=utf-8'
-      req.body = params if object_present?(params)
+      req.body = URI.encode_www_form(params) if object_present?(params)
     end
     process_response(res)
   rescue => e
