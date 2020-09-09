@@ -12,6 +12,6 @@ to_gem:
     - RELEASE_VERSION=$(cat VERSION.md)
     - GEM_NAME=json_requester-$RELEASE_VERSION.gem
     - gem build json_requester.gemspec
-#    - gem push $GEM_NAME
-#  only:
-#    - master
+    - gem push $GEM_NAME
+  only:
+    - master
