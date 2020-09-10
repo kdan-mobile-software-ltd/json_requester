@@ -44,7 +44,7 @@ class JsonRequester
     res = @conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = 'application/json ;charset=utf-8'
+      req.headers['Content-Type'] = 'application/json;charset=utf-8'
       req.body = params.to_json if object_present?(params)
     end
     process_response(res)
