@@ -4,10 +4,9 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host, multipart: false, mime_type: nil)
+  def initialize(host, multipart: false)
     @host = host
     @multipart = multipart
-    @mime_type = mime_type
     @conn = init_conn
   end
 
