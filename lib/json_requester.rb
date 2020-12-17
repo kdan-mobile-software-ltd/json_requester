@@ -4,8 +4,10 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host)
+  def initialize(host, multipart: false, mime_type: nil)
     @host = host
+    @multipart = multipart
+    @mime_type = mime_type
     @conn = init_conn
   end
 
@@ -28,18 +30,6 @@ class JsonRequester
     error_response(e)
   end
 
-  def form_send(http_method, path, params={}, headers={})
-    res = @conn.send(http_method) do |req|
-      req.url path
-      req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = 'application/x-www-form-urlencoded ;charset=utf-8'
-      req.body = URI.encode_www_form(params) if object_present?(params)
-    end
-    process_response(res)
-  rescue => e
-    error_response(e)
-  end
-
   def json_send(http_method, path, params={}, headers={})
     res = @conn.send(http_method) do |req|
       req.url path
@@ -52,10 +42,32 @@ class JsonRequester
     error_response(e)
   end
 
+  def form_send(http_method, path, params={}, headers={})
+    res = @conn.send(http_method) do |req|
+      req.url path
+      req.headers = headers if object_present?(headers)
+      req.headers['Content-Type'] = 'application/x-www-form-urlencoded ;charset=utf-8'
+      req.body = URI.encode_www_form(params) if object_present?(params)
+    end
+    process_response(res)
+  rescue => e
+    error_response(e)
+  end
+
+  def multipart_form_send(http_method, path, params={}, headers={})
+    res = @conn.send(http_method) do |req|
+      req.url path
+      req.headers = headers if object_present?(headers)
+      req.body = params if object_present?(params)
+    end
+    process_response(res)
+  end
+
   private
 
   def init_conn
     Faraday.new(url: host) do |faraday|
+      faraday.request :multipart if @multipart  # multipart form POST request
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to $stdout
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
@@ -81,4 +93,5 @@ class JsonRequester
   def object_present?(object)
     !(object.nil? || object.empty?)
   end
+  
 end
