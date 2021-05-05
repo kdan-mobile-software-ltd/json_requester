@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'json_requester'
-  s.version     = '1.0.1'
+  s.version     = '1.0.2'
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'Basic Wrapper of Faraday'
   s.description = 'wrapper of faraday'
@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.require_path     = "lib"
 
   s.required_ruby_version = '>= 2.5.1'
-  s.add_runtime_dependency "faraday", '~> 1.0.0'
+  s.add_runtime_dependency "faraday", '>= 1.0.0'
 end
