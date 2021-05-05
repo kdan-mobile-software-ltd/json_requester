@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    requester (0.1.0)
+    json_requester (1.0.1)
+      faraday (~> 1.0.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    faraday (0.15.4)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     multipart-post (2.1.1)
 
@@ -15,7 +16,7 @@ PLATFORMS
 
 DEPENDENCIES
   faraday
-  requester!
+  json_requester!
 
 BUNDLED WITH
    1.17.2
