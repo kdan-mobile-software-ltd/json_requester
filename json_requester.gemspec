@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'json_requester'
-  s.version     = '1.0.2'
+  s.version     = File.read('./VERSION.md').chop
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'Basic Wrapper of Faraday'
   s.description = 'wrapper of faraday'
