@@ -7,7 +7,6 @@ class JsonRequester
   def initialize(host, multipart: false)
     @host = host
     @multipart = multipart
-    @conn = init_conn
   end
 
   def http_send(http_method, path, params={}, headers={})
@@ -19,7 +18,8 @@ class JsonRequester
   end
 
   def normal_send(http_method, path, params={}, headers={})
-    res = @conn.send(http_method) do |req|
+    conn = init_conn
+    res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.params = params if object_present?(params)
@@ -30,7 +30,8 @@ class JsonRequester
   end
 
   def json_send(http_method, path, params={}, headers={})
-    res = @conn.send(http_method) do |req|
+    conn = init_conn
+    res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.headers['Content-Type'] = 'application/json;charset=utf-8'
@@ -42,7 +43,8 @@ class JsonRequester
   end
 
   def form_send(http_method, path, params={}, headers={})
-    res = @conn.send(http_method) do |req|
+    conn = init_conn
+    res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.headers['Content-Type'] = 'application/x-www-form-urlencoded ;charset=utf-8'
@@ -54,7 +56,8 @@ class JsonRequester
   end
 
   def multipart_form_send(http_method, path, params={}, headers={})
-    res = @conn.send(http_method) do |req|
+    conn = init_conn
+    res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.body = params if object_present?(params)
