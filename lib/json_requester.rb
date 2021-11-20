@@ -81,7 +81,7 @@ class JsonRequester
     begin
       body = JSON.parse(response.body)
       body = body.is_a?(Hash) ? body : {'body' => body}
-      body['body_status'] = body.delete('status') unless body['status'].is_a?(Integer)
+      body['body_status'] = body.delete('status') if body['status'].is_a?(Integer)
     rescue
       body = {'body' => response.body}
     end
@@ -95,5 +95,5 @@ class JsonRequester
   def object_present?(object)
     !(object.nil? || object.empty?)
   end
-  
+
 end
