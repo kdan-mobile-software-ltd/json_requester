@@ -12,6 +12,7 @@
     res = requester.http_send(http_method, path, params, headers)
     puts res['status']  # 200
     puts res['body']    # { foo: 'bar' }
+    puts res['body_status']  # 'success'
 
     puts res['status']  # 500
     puts res['message'] # invalid method
