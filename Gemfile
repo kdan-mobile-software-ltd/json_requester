@@ -3,4 +3,4 @@ source 'https://rubygems.org'
 gemspec
 
 # http request
-gem 'faraday'
+gem 'faraday', '~> 1.8'
