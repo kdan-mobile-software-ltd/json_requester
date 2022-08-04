@@ -4,9 +4,10 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host, multipart: false)
+  def initialize(host, multipart: false, ssl_verify: true)
     @host = host
     @multipart = multipart
+    @ssl_verify = ssl_verify
   end
 
   def http_send(http_method, path, params={}, headers={})
@@ -69,7 +70,7 @@ class JsonRequester
   private
 
   def init_conn
-    Faraday.new(url: host) do |faraday|
+    Faraday.new(url: host, ssl: { verify: @ssl_verify }) do |faraday|
       faraday.request :multipart if @multipart  # multipart form POST request
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to $stdout
