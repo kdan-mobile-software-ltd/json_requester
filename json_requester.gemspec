@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'json_requester'
-  s.version     = File.read('./VERSION.md').chop
+  s.version     = File.read('./VERSION.md')
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'Basic Wrapper of Faraday'
   s.description = 'wrapper of faraday'
@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.email       = 'laura34963@kdanmobile.com'
   s.homepage    = 'https://github.com/kdan-mobile-software-ltd/json_requester'
   s.license     = 'MIT'
-  s.metadata = {
+  s.metadata    = {
     "source_code_uri" => "https://github.com/kdan-mobile-software-ltd/json_requester",
     "changelog_uri" => "https://github.com/kdan-mobile-software-ltd/json_requester/blob/master/CHANGELOG.md"
   }
