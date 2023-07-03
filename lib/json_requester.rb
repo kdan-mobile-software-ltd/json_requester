@@ -4,10 +4,11 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host, multipart: false, ssl_verify: true)
+  def initialize(host, multipart: false, ssl_verify: true, timeout: 60)
     @host = host
     @multipart = multipart
     @ssl_verify = ssl_verify
+    @timeout = timeout
   end
 
   def http_send(http_method, path, params={}, headers={})
@@ -75,6 +76,7 @@ class JsonRequester
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to $stdout
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+      faraday.options.timeout = @timeout
     end
   end
 
