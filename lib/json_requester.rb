@@ -11,17 +11,17 @@ class JsonRequester
     @timeout = timeout
   end
 
-  def http_send(http_method, path, params={}, headers={})
+  def http_send(http_method, path, params={}, headers={}, sort_params: true)
     puts "send #{http_method} reqeust to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
-      normal_send(http_method, path, params, headers)
+      normal_send(http_method, path, params, headers, sort_params: sort_params)
     else
-      json_send(http_method, path, params, headers)
+      json_send(http_method, path, params, headers, sort_params: sort_params)
     end
   end
 
-  def normal_send(http_method, path, params={}, headers={})
-    conn = init_conn
+  def normal_send(http_method, path, params={}, headers={}, sort_params: true)
+    conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
@@ -32,8 +32,8 @@ class JsonRequester
     error_response(e)
   end
 
-  def json_send(http_method, path, params={}, headers={})
-    conn = init_conn
+  def json_send(http_method, path, params={}, headers={}, sort_params: true)
+    conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
@@ -45,8 +45,8 @@ class JsonRequester
     error_response(e)
   end
 
-  def form_send(http_method, path, params={}, headers={})
-    conn = init_conn
+  def form_send(http_method, path, params={}, headers={}, sort_params: true)
+    conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
@@ -58,8 +58,8 @@ class JsonRequester
     error_response(e)
   end
 
-  def multipart_form_send(http_method, path, params={}, headers={})
-    conn = init_conn
+  def multipart_form_send(http_method, path, params={}, headers={}, sort_params: true)
+    conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
@@ -70,8 +70,9 @@ class JsonRequester
 
   private
 
-  def init_conn
-    Faraday::NestedParamsEncoder.sort_params = false # default is true
+  def init_conn(sort_params: true)
+    # https://lostisland.github.io/faraday/#/customization/index?id=order-of-parameters
+    Faraday::NestedParamsEncoder.sort_params = sort_params # faraday default is true
 
     Faraday.new(url: host, ssl: { verify: @ssl_verify }) do |faraday|
       faraday.request :multipart if @multipart  # multipart form POST request
