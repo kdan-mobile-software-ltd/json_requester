@@ -71,6 +71,8 @@ class JsonRequester
   private
 
   def init_conn
+    Faraday::NestedParamsEncoder.sort_params = false # default is true
+
     Faraday.new(url: host, ssl: { verify: @ssl_verify }) do |faraday|
       faraday.request :multipart if @multipart  # multipart form POST request
       faraday.request  :url_encoded             # form-encode POST params

@@ -1,3 +1,6 @@
+## [1.0.11] - 2023-08-17
+- Set auto sort params to false.
+
 ## [1.0.10] - 2023-07-03
 - Add timeout option.
 
