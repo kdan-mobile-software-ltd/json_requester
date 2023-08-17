@@ -1,3 +1,7 @@
+## [1.0.11] - 2023-08-17
+- Add sort params condition to use.
+- Update README description.
+
 ## [1.0.10] - 2023-07-03
 - Add timeout option.
 
