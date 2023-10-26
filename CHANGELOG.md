@@ -1,3 +1,6 @@
+## [1.0.12] - 2023-10-26
+- Add need_response_header condition to use.
+
 ## [1.0.11] - 2023-08-17
 - Add sort params condition to use.
 - Update README description.

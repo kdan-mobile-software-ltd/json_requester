@@ -11,28 +11,28 @@ class JsonRequester
     @timeout = timeout
   end
 
-  def http_send(http_method, path, params={}, headers={}, sort_params: true)
+  def http_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
     puts "send #{http_method} reqeust to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
-      normal_send(http_method, path, params, headers, sort_params: sort_params)
+      normal_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
     else
-      json_send(http_method, path, params, headers, sort_params: sort_params)
+      json_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
     end
   end
 
-  def normal_send(http_method, path, params={}, headers={}, sort_params: true)
+  def normal_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.params = params if object_present?(params)
     end
-    process_response(res)
+    process_response(res, need_response_header: need_response_header)
   rescue => e
     error_response(e)
   end
 
-  def json_send(http_method, path, params={}, headers={}, sort_params: true)
+  def json_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -40,12 +40,12 @@ class JsonRequester
       req.headers['Content-Type'] = 'application/json;charset=utf-8'
       req.body = params.to_json if object_present?(params)
     end
-    process_response(res)
+    process_response(res, need_response_header: need_response_header)
   rescue => e
     error_response(e)
   end
 
-  def form_send(http_method, path, params={}, headers={}, sort_params: true)
+  def form_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -53,19 +53,19 @@ class JsonRequester
       req.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
       req.body = URI.encode_www_form(params) if object_present?(params)
     end
-    process_response(res)
+    process_response(res, need_response_header: need_response_header)
   rescue => e
     error_response(e)
   end
 
-  def multipart_form_send(http_method, path, params={}, headers={}, sort_params: true)
+  def multipart_form_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
       req.body = params if object_present?(params)
     end
-    process_response(res)
+    process_response(res, need_response_header: need_response_header)
   end
 
   private
@@ -83,7 +83,7 @@ class JsonRequester
     end
   end
 
-  def process_response(response)
+  def process_response(response, need_response_header: false)
     result = {'status' => response.status}
     begin
       body = JSON.parse(response.body)
@@ -92,7 +92,9 @@ class JsonRequester
     rescue
       body = {'body' => response.body}
     end
-    result.merge(body)
+    result.merge!(body)
+    result['headers'] = response.headers.to_h if need_response_header
+    result
   end
 
   def error_response(err)
