@@ -13,7 +13,8 @@ $ gem install json_requester
 ```ruby
   host = 'http://httpbingo.org'
   # `timeout` at Faraday gem default is 60 secs.
-  requester = JsonRequester.new(host, timeout: 120)
+  # `user_agent` at Faraday gem default is like "Faraday v1.10.0", it would be deep_merge at Faraday default setting.
+  requester = JsonRequester.new(host, timeout: 120, user_agent: 'My Agent 1.2')
   
   http_method = :get  # :get / :post / :put / :delete
   path = ''

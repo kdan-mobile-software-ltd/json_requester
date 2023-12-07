@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
   s.require_path     = "lib"
 
   s.required_ruby_version = '>= 2.5.1'
-  s.add_runtime_dependency 'faraday', '~> 1.0', '>= 1.0.0'
-  s.add_development_dependency 'pry', '~> 0.14.1'
+  s.add_runtime_dependency 'faraday', '~> 1.10', '>= 1.10.3'
+  s.add_development_dependency 'pry', '~> 0.14.2'
 end
