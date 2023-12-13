@@ -4,11 +4,12 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host, multipart: false, ssl_verify: true, timeout: 60)
+  def initialize(host, multipart: false, ssl_verify: true, timeout: 60, user_agent: '')
     @host = host
     @multipart = multipart
     @ssl_verify = ssl_verify
     @timeout = timeout
+    @user_agent = user_agent.strip.to_s
   end
 
   def http_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
@@ -73,6 +74,7 @@ class JsonRequester
   def init_conn(sort_params: true)
     # https://lostisland.github.io/faraday/#/customization/index?id=order-of-parameters
     Faraday::NestedParamsEncoder.sort_params = sort_params # faraday default is true
+    Faraday.default_connection_options = { headers: { user_agent: @user_agent } } unless @user_agent.empty?
 
     Faraday.new(url: host, ssl: { verify: @ssl_verify }) do |faraday|
       faraday.request :multipart if @multipart  # multipart form POST request

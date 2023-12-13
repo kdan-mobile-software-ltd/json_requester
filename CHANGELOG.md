@@ -1,3 +1,8 @@
+## [1.1.0] - 2023-12-07
+- Drop support for Ruby 2.7 below.
+- Add user_agent condition to use.
+- Lock faraday to `1.10.3` version.
+
 ## [1.0.12] - 2023-10-26
 - Add need_response_header condition to use.
 
