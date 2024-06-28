@@ -1,3 +1,6 @@
+## [1.1.2] - 2024-06-28
+- Accept `content_type_charset` keyword argument for `http_send` method.
+
 ## [1.1.1] - 2024-06-28
 - Accept `content_type_charset` keyword argument for `json_send` method.
 

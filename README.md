@@ -30,7 +30,8 @@ $ gem install json_requester
   # Request by using JSON body or query params, use the `http_send` method.
   # other methods: `form_send`, `multipart_form_send`
   # `sort_params` at Faraday gem default is true.
-  res = requester.http_send(http_method, path, params, headers, sort_params: true)
+  # `content_type_charset` default is 'utf-8', this will add ; charset=utf-8 after `Content-Type` header (ex. `Content-Type=application/json; charset=utf-8`).
+  res = requester.http_send(http_method, path, params, headers, sort_params: true, content_type_charset: 'utf-8')
   
   # http response code
   puts res['status'] # 200, 404, .. etc
