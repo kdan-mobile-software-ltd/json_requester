@@ -1,3 +1,6 @@
+## [1.1.1] - 2024-06-28
+- Accept `content_type_charset` keyword argument for `json_requester` method.
+
 ## [1.1.0] - 2023-12-07
 - Drop support for Ruby 2.7 below.
 - Add user_agent condition to use.
