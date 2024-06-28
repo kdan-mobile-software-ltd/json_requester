@@ -33,12 +33,16 @@ class JsonRequester
     error_response(e)
   end
 
-  def json_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
+  def json_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = 'application/json;charset=utf-8'
+      if content_type_charset.present?
+        req.headers['Content-Type'] = "application/json;charset=#{content_type_charset}"
+      else
+        req.headers['Content-Type'] = 'application/json'
+      end
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
