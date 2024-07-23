@@ -38,11 +38,7 @@ class JsonRequester
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      if content_type_charset.present?
-        req.headers['Content-Type'] = "application/json;charset=#{content_type_charset}"
-      else
-        req.headers['Content-Type'] = 'application/json'
-      end
+      req.headers['Content-Type'] = content_type_charset.nil? ? 'application/json' : "application/json;charset=#{content_type_charset}"
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
