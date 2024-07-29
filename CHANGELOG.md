@@ -1,5 +1,5 @@
 ## [1.1.3] - 2024-07-23
-- Fix `.present?` method to `.nil?` method in `json_send` method.
+- Add `activesupport` gem to dependencies.
 
 ## [1.1.2] - 2024-06-28
 - Accept `content_type_charset` keyword argument for `http_send` method.
