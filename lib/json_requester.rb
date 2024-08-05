@@ -1,10 +1,13 @@
 require 'faraday'
 require 'json'
-require 'active_support'
-require 'active_support/core_ext'
 
 class JsonRequester
   attr_reader :host, :conn
+
+  BLANK_RE = /\A[[:space:]]*\z/
+  ENCODED_BLANKS = {
+    BLANK_RE.encoding => Regexp.new(BLANK_RE.source.encode(BLANK_RE.encoding), BLANK_RE.options | Regexp::FIXEDENCODING)
+  }
 
   def initialize(host, multipart: false, ssl_verify: true, timeout: 60, user_agent: '')
     @host = host
@@ -40,7 +43,7 @@ class JsonRequester
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = content_type_charset.present? ? "application/json;charset=#{content_type_charset}" : 'application/json'
+      req.headers['Content-Type'] = object_present?(content_type_charset) ? "application/json;charset=#{content_type_charset}" : 'application/json'
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
@@ -106,7 +109,14 @@ class JsonRequester
   end
 
   def object_present?(object)
-    !(object.nil? || object.empty?)
+    return false if object.nil? || object.empty? ||
+      begin
+        BLANK_RE.match?(object)
+      rescue Encoding::CompatibilityError
+        ENCODED_BLANKS[object.encoding].match?(object)
+      end  # active_support blank? method
+
+    true
   end
 
 end
