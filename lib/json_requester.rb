@@ -109,14 +109,17 @@ class JsonRequester
   end
 
   def object_present?(object)
-    return false if object.nil? || object.empty? ||
+    !(object.nil? || object_blank?(object))
+  end
+
+  def object_blank?(object)
+    # active_support blank? method
+    object.empty? ||
       begin
         BLANK_RE.match?(object)
       rescue Encoding::CompatibilityError
         ENCODED_BLANKS[object.encoding].match?(object)
-      end  # active_support blank? method
-
-    true
+      end
   end
 
 end
