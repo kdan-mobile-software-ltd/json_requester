@@ -4,11 +4,6 @@ require 'json'
 class JsonRequester
   attr_reader :host, :conn
 
-  BLANK_RE = /\A[[:space:]]*\z/
-  ENCODED_BLANKS = {
-    BLANK_RE.encoding => Regexp.new(BLANK_RE.source.encode(BLANK_RE.encoding), BLANK_RE.options | Regexp::FIXEDENCODING)
-  }
-
   def initialize(host, multipart: false, ssl_verify: true, timeout: 60, user_agent: '')
     @host = host
     @multipart = multipart
@@ -105,21 +100,17 @@ class JsonRequester
   end
 
   def error_response(err)
-    {'status' => 500, 'message' => "#{err.class.name}: #{err.message}"}
+    { 'status' => 500, 'message' => "#{err.class.name}: #{err.message}" }
   end
 
   def object_present?(object)
-    !(object.nil? || object_blank?(object))
+    # active_support present? method
+    !object_blank?(object)
   end
 
   def object_blank?(object)
     # active_support blank? method
-    object.empty? ||
-      begin
-        BLANK_RE.match?(object)
-      rescue Encoding::CompatibilityError
-        ENCODED_BLANKS[object.encoding].match?(object)
-      end
+    object.respond_to?(:empty?) ? !!object.empty? : false
   end
 
 end
