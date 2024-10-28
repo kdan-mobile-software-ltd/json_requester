@@ -104,11 +104,13 @@ class JsonRequester
   end
 
   def object_present?(object)
+    # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L25
     # active_support present? method
     !object_blank?(object)
   end
 
   def object_blank?(object)
+    # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L18
     # active_support blank? method
     object.respond_to?(:empty?) ? !!object.empty? : false
   end

@@ -1,4 +1,4 @@
-## [1.1.3] - 2024-07-23
+## [1.1.3] - 2024-10-28
 - Replace `.present?` method with `object_present?` for string in `json_send` method. 
 
 ## [1.1.2] - 2024-06-28
