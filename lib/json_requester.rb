@@ -13,7 +13,7 @@ class JsonRequester
   end
 
   def http_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
-    puts "send #{http_method} reqeust to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
+    puts "send #{http_method} request to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
       normal_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
     else
