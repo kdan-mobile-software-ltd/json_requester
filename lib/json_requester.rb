@@ -13,7 +13,7 @@ class JsonRequester
   end
 
   def http_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
-    puts "send #{http_method} reqeust to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
+    puts "send #{http_method} request to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
       normal_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
     else
@@ -38,11 +38,7 @@ class JsonRequester
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      if content_type_charset.present?
-        req.headers['Content-Type'] = "application/json;charset=#{content_type_charset}"
-      else
-        req.headers['Content-Type'] = 'application/json'
-      end
+      req.headers['Content-Type'] = object_present?(content_type_charset) ? "application/json;charset=#{content_type_charset}" : 'application/json'
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
@@ -104,11 +100,19 @@ class JsonRequester
   end
 
   def error_response(err)
-    {'status' => 500, 'message' => "#{err.class.name}: #{err.message}"}
+    { 'status' => 500, 'message' => "#{err.class.name}: #{err.message}" }
   end
 
   def object_present?(object)
-    !(object.nil? || object.empty?)
+    # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L25
+    # active_support present? method
+    !object_blank?(object)
+  end
+
+  def object_blank?(object)
+    # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L18
+    # active_support blank? method
+    object.respond_to?(:empty?) ? !!object.empty? : false
   end
 
 end
