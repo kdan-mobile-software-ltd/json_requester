@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe JsonRequester do
   let(:host) { 'http://example.com' }
   let(:requester) { JsonRequester.new(host) }
-  let(:requester_with_overide_user_agent) { JsonRequester.new(host, user_agent: 'test_agent') }
+  let(:requester_with_override_user_agent) { JsonRequester.new(host, user_agent: 'test_agent') }
   
   describe '#initialize' do
     it 'initializes with default values' do
@@ -180,7 +180,7 @@ RSpec.describe JsonRequester do
     # INFO -- : response: Status 200
     # INFO -- : response:
     it 'uses sort_params false for query parameters' do
-      stub_request(:get, "http://example.com/test?param1=value1&param2=value2")
+      stub_request(:get, 'http://example.com/test?param1=value1&param2=value2')
         .to_return(status: 200, body: '{"result": "success"}')
         
       result = requester.normal_send(:get, '/test', {param2: 'value2', param1: 'value1'}, sort_params: false)
@@ -192,7 +192,7 @@ RSpec.describe JsonRequester do
     # INFO -- : response: Status 200
     # INFO -- : response:
     it 'uses sort_params true for query parameters' do
-      stub_request(:get, "http://example.com/test?param1=value1&param2=value2")
+      stub_request(:get, 'http://example.com/test?param1=value1&param2=value2')
         .to_return(status: 200, body: '{"result": "success"}')
         
       result = requester.normal_send(:get, '/test', {param2: 'value2', param1: 'value1'}, sort_params: true)
@@ -204,10 +204,10 @@ RSpec.describe JsonRequester do
     # INFO -- : response: Status 200
     # INFO -- : response:
     it 'overrides User-Agent for specific request' do
-      stub_request(:get, "http://example.com/test")
+      stub_request(:get, 'http://example.com/test')
         .to_return(status: 200, body: '{"result": "success"}')
 
-      result = requester_with_overide_user_agent.normal_send(:get, '/test')
+      result = requester_with_override_user_agent.normal_send(:get, '/test')
       expect(result).to include('status' => 200, 'result' => 'success')
     end
   end
