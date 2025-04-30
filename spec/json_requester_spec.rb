@@ -177,7 +177,7 @@ RSpec.describe JsonRequester do
 
     # INFO -- : request: GET http://example.com/test?param2=value2&param1=value1
     # INFO -- : request: User-Agent: "Faraday v2.13.1"
-    # NFO -- : response: Status 200
+    # INFO -- : response: Status 200
     # INFO -- : response:
     it 'uses sort_params false for query parameters' do
       stub_request(:get, "http://example.com/test?param1=value1&param2=value2")
