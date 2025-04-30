@@ -1,3 +1,13 @@
+## [2.0.0] - 2025-04-25
+
+### Breaking changes
+
+- Upgrade Faraday to version 2.x.
+- Remove support for Ruby 2.7 and below.
+
+### Features
+- Add rspec for testing.
+
 ## [1.1.3] - 2024-10-28
 - Replace `.present?` method with `object_present?` for string in `json_send` method. 
 

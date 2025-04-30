@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday/multipart'
 require 'json'
 
 class JsonRequester
@@ -75,8 +76,12 @@ class JsonRequester
     # https://lostisland.github.io/faraday/#/customization/index?id=order-of-parameters
     Faraday::NestedParamsEncoder.sort_params = sort_params # faraday default is true
     Faraday.default_connection_options = { headers: { user_agent: @user_agent } } unless @user_agent.empty?
+    options = { 
+      url: host,
+      ssl: { verify: @ssl_verify }
+    }
 
-    Faraday.new(url: host, ssl: { verify: @ssl_verify }) do |faraday|
+    Faraday.new(options) do |faraday|
       faraday.request :multipart if @multipart  # multipart form POST request
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to $stdout
@@ -112,6 +117,7 @@ class JsonRequester
   def object_blank?(object)
     # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L18
     # active_support blank? method
+    return true if object.nil?
     object.respond_to?(:empty?) ? !!object.empty? : false
   end
 

@@ -18,7 +18,10 @@ Gem::Specification.new do |s|
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = "lib"
 
-  s.required_ruby_version = '>= 2.5.1'
-  s.add_runtime_dependency 'faraday', '~> 1.10', '>= 1.10.3'
+  s.required_ruby_version = '>= 3.0.0'
+  s.add_runtime_dependency "faraday", "~> 2.0", ">= 2.0.1"
+  s.add_runtime_dependency 'faraday-multipart', '~> 1.1.0'
   s.add_development_dependency 'pry', '~> 0.14.2'
+  s.add_development_dependency "rspec", "~> 3.0"
+  s.add_development_dependency "webmock", "~> 3.25", ">= 3.25.1"
 end
