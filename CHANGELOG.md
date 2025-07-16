@@ -1,3 +1,7 @@
+## [2.0.1] - 2025-07-16
+- Update Faraday to version `2.13.2` for better stability and performance.
+- Update faraday-multipart to version `1.1.1`.
+
 ## [2.0.0] - 2025-04-25
 
 ### Breaking changes

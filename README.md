@@ -47,7 +47,6 @@ $ gem install json_requester -v '~> 2.0'
   puts res['status'] # 200, 404, .. etc
   # the response JSON body
   puts res['body'] # { foo: 'bar' }
-
   # If need_response_header is true, you can access response headers
   puts res['headers'] if res.key?('headers')
 
