@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0.0'
   s.add_runtime_dependency "faraday", "~> 2.0", ">= 2.0.1"
   s.add_runtime_dependency 'faraday-multipart', '~> 1.1.0'
+
   s.add_development_dependency 'pry', '~> 0.14.2'
   s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "webmock", "~> 3.25", ">= 3.25.1"
