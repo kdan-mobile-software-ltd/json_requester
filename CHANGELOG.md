@@ -1,3 +1,6 @@
+## [2.0.2] - 2025-09-23
+- Update REXML to version `3.4.4` for [CVE-2025-58767](https://www.ruby-lang.org/en/news/2025/09/18/dos-rexml-cve-2025-58767/) DoS vulnerability warning.
+
 ## [2.0.1] - 2025-07-16
 - Update Faraday to version `2.13.2` for better stability and performance.
 - Update faraday-multipart to version `1.1.1`.
