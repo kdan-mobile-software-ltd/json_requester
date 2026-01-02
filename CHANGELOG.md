@@ -1,3 +1,9 @@
+## [2.0.3] - 2025-12-31
+- Update Faraday to version `2.14.0`.
+- Update faraday-multipart to version `1.2.0`.
+- Update uri to version `1.1.1` for [CVE-2025-61594](https://www.ruby-lang.org/en/news/2025/10/07/uri-cve-2025-61594/) URI Credential Leakage Bypass vulnerability warning.
+- Update CI to use Ruby 3.4.8.
+
 ## [2.0.2] - 2025-09-23
 - Update REXML to version `3.4.4` for [CVE-2025-58767](https://www.ruby-lang.org/en/news/2025/09/18/dos-rexml-cve-2025-58767/) DoS vulnerability warning.
 
