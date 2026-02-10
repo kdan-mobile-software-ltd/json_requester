@@ -1,3 +1,6 @@
+## [2.0.4] - 2026-02-10
+- Update Faraday to version `2.14.1` for SSRF vulnerability warning.
+
 ## [2.0.3] - 2025-12-31
 - Update Faraday to version `2.14.0`.
 - Update faraday-multipart to version `1.2.0`.
