@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'faraday'
 require 'faraday/multipart'
 require 'json'
@@ -13,7 +15,7 @@ class JsonRequester
     @user_agent = user_agent.strip.to_s
   end
 
-  def http_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
+  def http_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
     puts "send #{http_method} request to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
       normal_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
@@ -22,7 +24,7 @@ class JsonRequester
     end
   end
 
-  def normal_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
+  def normal_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -30,11 +32,11 @@ class JsonRequester
       req.params = params if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
-  rescue => e
+  rescue StandardError => e
     error_response(e)
   end
 
-  def json_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
+  def json_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -43,11 +45,11 @@ class JsonRequester
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
-  rescue => e
+  rescue StandardError => e
     error_response(e)
   end
 
-  def form_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
+  def form_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -56,11 +58,11 @@ class JsonRequester
       req.body = URI.encode_www_form(params) if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
-  rescue => e
+  rescue StandardError => e
     error_response(e)
   end
 
-  def multipart_form_send(http_method, path, params={}, headers={}, sort_params: true, need_response_header: false)
+  def multipart_form_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false)
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
@@ -76,7 +78,7 @@ class JsonRequester
     # https://lostisland.github.io/faraday/#/customization/index?id=order-of-parameters
     Faraday::NestedParamsEncoder.sort_params = sort_params # faraday default is true
     Faraday.default_connection_options = { headers: { user_agent: @user_agent } } unless @user_agent.empty?
-    options = { 
+    options = {
       url: host,
       ssl: { verify: @ssl_verify }
     }
@@ -91,13 +93,13 @@ class JsonRequester
   end
 
   def process_response(response, need_response_header: false)
-    result = {'status' => response.status}
+    result = { 'status' => response.status }
     begin
       body = JSON.parse(response.body)
-      body = body.is_a?(Hash) ? body : {'body' => body}
+      body = { 'body' => body } unless body.is_a?(Hash)
       body['body_status'] = body.delete('status') unless body['status'].nil?
-    rescue
-      body = {'body' => response.body}
+    rescue StandardError
+      body = { 'body' => response.body }
     end
     result.merge!(body)
     result['headers'] = response.headers.to_h if need_response_header
@@ -118,7 +120,7 @@ class JsonRequester
     # Ref: https://github.com/rails/rails/blob/v7.1.4.2/activesupport/lib/active_support/core_ext/object/blank.rb#L18
     # active_support blank? method
     return true if object.nil?
+
     object.respond_to?(:empty?) ? !!object.empty? : false
   end
-
 end
