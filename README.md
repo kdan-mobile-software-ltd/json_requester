@@ -1,6 +1,7 @@
 # JsonRequester
 
-`JsonRequester` is a lightweight wrapper around Faraday for sending JSON, form-encoded, and multipart HTTP requests.
+`JsonRequester` is a lightweight wrapper around Faraday for sending
+JSON, form-encoded, and multipart HTTP requests.
 
 ## Requirements
 
@@ -32,7 +33,11 @@ gem install json_requester -v '~> 1.0'
 ```ruby
 host = 'http://httpbingo.org'
 
-requester = JsonRequester.new(host, timeout: 120, user_agent: 'My Agent 1.2')
+requester = JsonRequester.new(
+  host,
+  timeout: 120,
+  user_agent: 'My Agent 1.2'
+)
 ```
 
 Available initialization options:
@@ -57,7 +62,15 @@ params = {
   key_2: 'value_2'
 }
 
-response = requester.http_send(:post, path, params, headers, sort_params: true, content_type_charset: 'utf-8', need_response_header: true)
+response = requester.http_send(
+  :post,
+  path,
+  params,
+  headers,
+  sort_params: true,
+  content_type_charset: 'utf-8',
+  need_response_header: true
+)
 
 puts response['status']
 puts response['body']
@@ -76,7 +89,14 @@ params = {
   key_2: 'value_2'
 }
 
-form_response = requester.form_send(:post, path, params, headers, sort_params: true, need_response_header: true)
+form_response = requester.form_send(
+  :post,
+  path,
+  params,
+  headers,
+  sort_params: true,
+  need_response_header: true
+)
 ```
 
 ### Send multipart requests
@@ -91,7 +111,12 @@ upload_params = {
   description: 'File upload example'
 }
 
-upload_response = multipart_requester.multipart_form_send(:post, '/upload_path', upload_params, { 'Authorization' => 'Bearer token' })
+upload_response = multipart_requester.multipart_form_send(
+  :post,
+  '/upload_path',
+  upload_params,
+  { 'Authorization' => 'Bearer token' }
+)
 ```
 
 ## Request Methods
@@ -102,21 +127,28 @@ upload_response = multipart_requester.multipart_form_send(:post, '/upload_path',
 
 ### Method overview
 
-- `http_send`: uses query params for `:get`, and sends a JSON body for other HTTP methods
+- `http_send`: uses query params for `:get`, and sends a JSON body for
+  other HTTP methods
 - `form_send`: sends requests as `application/x-www-form-urlencoded`
-- `multipart_form_send`: sends multipart form data, typically for file uploads
+- `multipart_form_send`: sends multipart form data, typically for file
+  uploads
 
-Supported HTTP methods include:
-
-- `sort_params`: controls whether query parameters are sorted before sending, default is `true`
-- `content_type_charset`: used by `http_send` for JSON requests, default is `'utf-8'`
-- `need_response_header`: when set to `true`, includes response headers in the returned result
+`http_send`, `form_send`, and `multipart_form_send` accept HTTP verbs
+such as:
 
 - `:get`
 - `:post`
 - `:put`
 - `:delete`
 
-### Common optionsSecurity
+### Common options
+
+- `sort_params`: controls whether query parameters are sorted before sending, default is `true`
+- `content_type_charset`: used by `http_send` for JSON requests,
+  default is `'utf-8'`
+- `need_response_header`: when set to `true`, includes response
+  headers in the returned result
+
+## Security
 
 Please see [SECURITY.md](SECURITY.md) for vulnerability reporting instructions.
