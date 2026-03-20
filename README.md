@@ -100,6 +100,23 @@ upload_response = multipart_requester.multipart_form_send(:post, '/upload_path',
 - `form_send`: form-encoded requests
 - `multipart_form_send`: multipart form requests
 
-## Security
+### Method overview
+
+- `http_send`: uses query params for `:get`, and sends a JSON body for other HTTP methods
+- `form_send`: sends requests as `application/x-www-form-urlencoded`
+- `multipart_form_send`: sends multipart form data, typically for file uploads
+
+Supported HTTP methods include:
+
+- `sort_params`: controls whether query parameters are sorted before sending, default is `true`
+- `content_type_charset`: used by `http_send` for JSON requests, default is `'utf-8'`
+- `need_response_header`: when set to `true`, includes response headers in the returned result
+
+- `:get`
+- `:post`
+- `:put`
+- `:delete`
+
+### Common optionsSecurity
 
 Please see [SECURITY.md](SECURITY.md) for vulnerability reporting instructions.
