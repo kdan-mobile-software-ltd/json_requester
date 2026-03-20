@@ -1,3 +1,11 @@
+## [2.0.5] - 2026-03-19
+- Update json to version `2.19.2` for `CVE-2026-33210` format string injection vulnerability mitigation.
+- Move development dependencies from `gemspec` to `Gemfile`.
+- Add RuboCop configuration for project linting and exclude `spec/**/*` from `Metrics/BlockLength`.
+- Remove the empty RSpec configuration block in `spec_helper`.
+- Refresh the README structure and usage examples.
+- Add `SECURITY.md` for vulnerability reporting guidelines.
+
 ## [2.0.4] - 2026-02-10
 - Update Faraday to version `2.14.1` for SSRF vulnerability warning.
 
