@@ -1,5 +1,7 @@
 # JsonRequester
 
+[![Gem Version](https://badge.fury.io/rb/json_requester.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/json_requester)
+
 `JsonRequester` is a lightweight wrapper around Faraday for sending
 JSON, form-encoded, and multipart HTTP requests.
 
