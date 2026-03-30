@@ -1,3 +1,6 @@
+## [2.0.6] - 2026-03-30
+- Update mcp to version `0.9.2` for [Github GHSA-qvqr-5cv7-wh35](https://github.com/advisories/GHSA-qvqr-5cv7-wh35) security vulnerability warning.
+
 ## [2.0.5] - 2026-03-19
 - Update json to version `2.19.2` for `CVE-2026-33210` format string injection vulnerability mitigation.
 - Move development dependencies from `gemspec` to `Gemfile`.
