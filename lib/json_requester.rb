@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'faraday'
-require 'faraday/multipart'
-require 'json'
+require "faraday"
+require "faraday/multipart"
+require "json"
 
 class JsonRequester
   attr_reader :host, :conn
 
-  def initialize(host, multipart: false, ssl_verify: true, timeout: 60, user_agent: '')
+  def initialize(host, multipart: false, ssl_verify: true, timeout: 60, user_agent: "")
     @host = host
     @multipart = multipart
     @ssl_verify = ssl_verify
@@ -15,7 +15,7 @@ class JsonRequester
     @user_agent = user_agent.strip.to_s
   end
 
-  def http_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
+  def http_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: "utf-8")
     puts "send #{http_method} request to #{@host} with\npath: #{path}\nparams: #{params}\nheaders: #{headers}"
     if http_method == :get
       normal_send(http_method, path, params, headers, sort_params: sort_params, need_response_header: need_response_header)
@@ -36,12 +36,12 @@ class JsonRequester
     error_response(e)
   end
 
-  def json_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: 'utf-8')
+  def json_send(http_method, path, params = {}, headers = {}, sort_params: true, need_response_header: false, content_type_charset: "utf-8")
     conn = init_conn(sort_params: sort_params)
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = object_present?(content_type_charset) ? "application/json;charset=#{content_type_charset}" : 'application/json'
+      req.headers["Content-Type"] = object_present?(content_type_charset) ? "application/json;charset=#{content_type_charset}" : "application/json"
       req.body = params.to_json if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
@@ -54,7 +54,7 @@ class JsonRequester
     res = conn.send(http_method) do |req|
       req.url path
       req.headers = headers if object_present?(headers)
-      req.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+      req.headers["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8"
       req.body = URI.encode_www_form(params) if object_present?(params)
     end
     process_response(res, need_response_header: need_response_header)
@@ -93,21 +93,21 @@ class JsonRequester
   end
 
   def process_response(response, need_response_header: false)
-    result = { 'status' => response.status }
+    result = { "status" => response.status }
     begin
       body = JSON.parse(response.body)
-      body = { 'body' => body } unless body.is_a?(Hash)
-      body['body_status'] = body.delete('status') unless body['status'].nil?
+      body = { "body" => body } unless body.is_a?(Hash)
+      body["body_status"] = body.delete("status") unless body["status"].nil?
     rescue StandardError
-      body = { 'body' => response.body }
+      body = { "body" => response.body }
     end
     result.merge!(body)
-    result['headers'] = response.headers.to_h if need_response_header
+    result["headers"] = response.headers.to_h if need_response_header
     result
   end
 
   def error_response(err)
-    { 'status' => 500, 'message' => "#{err.class.name}: #{err.message}" }
+    { "status" => 500, "message" => "#{err.class.name}: #{err.message}" }
   end
 
   def object_present?(object)
