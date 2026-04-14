@@ -1,3 +1,6 @@
+## [2.0.8] - 2026-04-08
+- Update `addressable` to `2.9.0` to fix Regular Expression Denial of Service in Addressable templates.
+
 ## [2.0.7] - 2026-03-30
 - Update RuboCop configuration to enforce double quotes for strings.
 - Add RuboCop lint stage to CI pipeline.
